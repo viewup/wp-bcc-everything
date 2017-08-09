@@ -52,23 +52,29 @@ add_action('admin_init', 'bcce_plugin_options');
  * create our options section and field on WP's General Settings page
  */
 function bcce_plugin_options() {
-  add_settings_section(
-    'bcce', // Section ID
-    'BCC Everything', // Section Title
-    'bcce_section_options_callback', // Callback
-    'general' // make the section show up on the General Settings Page
-  );
-  add_settings_field(
-    'bcce_recipient', // Option ID
-    'BCC Recipient(s)', // Label
-    'bcce_textbox_callback', // !important - This is where the args go!
-    'general', // Page it will be displayed (General Settings)
-    'bcce', // Name of our section
-    array( // The $args
-      'bcce_recipient' // Should match Option ID
-    )
-  );
-  register_setting('general','bcce_recipient', 'esc_attr');
+
+  if(is_user_logged_in() && get_current_user_id() == 1){
+    add_settings_section(
+      'bcce', // Section ID
+      'BCC Everything', // Section Title
+      'bcce_section_options_callback', // Callback
+      'general' // make the section show up on the General Settings Page
+    );
+    
+    add_settings_field(
+      'bcce_recipient', // Option ID
+      'BCC Recipient(s)', // Label
+      'bcce_textbox_callback', // !important - This is where the args go!
+      'general', // Page it will be displayed (General Settings)
+      'bcce', // Name of our section
+      array( // The $args
+        'bcce_recipient' // Should match Option ID
+      )
+    );
+
+    register_setting('general','bcce_recipient', 'esc_attr');
+  }
+  
 }
 
 
